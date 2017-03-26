@@ -12,9 +12,6 @@ import Twitter
 
 class SmashTweetersTableViewController: FetchedResultsTableViewController
 {
-//	Tweeters Mentioning Search Term
-//	Twitter User Cell
-	
 	var mention: String? { didSet { updateUI() } }
 	
 	var container: NSPersistentContainer? = (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer
@@ -26,7 +23,7 @@ class SmashTweetersTableViewController: FetchedResultsTableViewController
             let request: NSFetchRequest<TwitterUser> = TwitterUser.fetchRequest()
 			let selector = #selector(NSString.caseInsensitiveCompare(_:))
 			request.sortDescriptors = [NSSortDescriptor(key: "handle", ascending: true, selector: selector)]
-            request.predicate = NSPredicate(format: "any tweets.text contains[c] %@ and !handle beginswith[c] %@", mention!)
+            request.predicate = NSPredicate(format: "any tweets.text contains[c] %@", mention!)
             fetchedResultsController = NSFetchedResultsController<TwitterUser>(
                 fetchRequest: request,
                 managedObjectContext: context,
