@@ -9,12 +9,17 @@
 import UIKit
 import Twitter
 
-class TweetTableViewController: UITableViewController, UITextFieldDelegate {
+class TweetTableViewController: UITableViewController, UISearchBarDelegate {
 
+	private struct Constants {
+		static let KeyForRecentSearches = "RecentSearchKeys"
+		static let SegueIdentifierToMentions = "ToMentions"
+		static let SegueIdentifierToCollectionView = "toCollectionViewOfImages"
+		static let TweetCellIdentifier = "Tweet"
+	}
+	
+	
     // MARK: - Model
-    /**
-        The prefix 'Twitter' is for readability reasons only put in front of Tweet.
-    */
     private var tweets: [[Twitter.Tweet]] = [[]] 
     
     var searchText: String? {
@@ -28,7 +33,9 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
             title = searchText
         }
     }
-    
+
+	private var recentSearchKeys = RecentSearchKeys(keyForData: Constants.KeyForRecentSearches)
+	
     internal func insertTweets(_ newTweets: [Twitter.Tweet])    // implicitly all functions are internal,
     {                                                           // in contrast to 'private'  and 'fileprivate'
         self.tweets.insert(newTweets, at: 0)
@@ -69,21 +76,30 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
         super.viewDidLoad()
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
-        searchText = "#stanford"
+        searchText = recentSearchKeys.last
     }
-    
-    @IBOutlet weak var searchTextField: UITextField! {
+	
+	// MARK: Replaced searchTextField with UISearchBar
+    @IBOutlet weak var searchTextField: UISearchBar! {
         didSet {
             searchTextField.delegate = self
+			let cancelButton = searchTextField.value(forKey: "cancelButton") as! UIButton
+			cancelButton.setTitle("Search", for: .normal)
         }
     }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == searchTextField {
-            searchText = searchTextField.text
-        }
-        return true
-    }
+	
+	// MARK: Delegate method from UISearchBarDelegate
+	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+		searchText = searchBar.text
+		recentSearchKeys.addSearchKey(searchText!)
+	}
+	
+	// MARK: UISearchBarDelegate method !!!!!!!
+	// Not "Cancel, but 'Search' function !!!!!
+	// twitter keyboard has no 'direct' enter/Search key
+	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+		searchBarSearchButtonClicked(searchBar)
+	}
     
     
     // MARK: - Table view data source
@@ -97,7 +113,7 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Tweet", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.TweetCellIdentifier, for: indexPath)
         
         let tweet = tweets[indexPath.section][indexPath.row]
         if let tweetCell = cell as? TweetTableViewCell {
@@ -109,50 +125,22 @@ class TweetTableViewController: UITableViewController, UITextFieldDelegate {
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "\(tweets.count-section)"
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+	{
+		let segueToVC = segue.destination.contentViewController
+		if let identifier = segue.identifier {
+			switch identifier {
+			case Constants.SegueIdentifierToMentions:
+				(segueToVC as? TweetMentionsTableViewController)?.tweet = (sender as? TweetTableViewCell)?.tweet
+			case Constants.SegueIdentifierToCollectionView:
+				if let vc = segueToVC as? ImagesCollectionViewController {
+					vc.tweets = tweets
+				}
+			default: break
+			}
+		}
+	}
+	
 
 }

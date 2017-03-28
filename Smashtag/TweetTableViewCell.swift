@@ -3,7 +3,6 @@
 //  Smashtag
 //
 //  Created by Michel Deiman on 16/03/2017.
-//  Copy of code as instructed by instructor...
 //  Copyright © 2017 Michel Deiman. All rights reserved.
 //
 
@@ -21,6 +20,7 @@ class TweetTableViewCell: UITableViewCell {
     
     private func updateUI() {
         tweetTextLabel?.text = tweet?.text
+		tweetTextLabel?.attributedText = attributedTextFor(tweet: tweet!, mentionTypes: [.hashTag, .url, .user])
         tweetUserLabel?.text = tweet?.user.description
         if let profileImageURL = tweet?.user.profileImageURL {
             // MARK: Fetch data off the main queue
@@ -48,5 +48,46 @@ class TweetTableViewCell: UITableViewCell {
         }
         
     }
-    
+	
+	private func attributedTextFor(tweet: Twitter.Tweet, mentionTypes: [MentionType]) -> NSAttributedString {
+		var tweetText = tweet.text
+		for _ in tweet.media {
+			tweetText += " 📷"
+		}
+		let attributedText = NSMutableAttributedString(string: tweetText)
+		
+		
+		for mentionType in mentionTypes {
+			var color: UIColor
+			var mentions: [Mention]
+			switch mentionType {
+			case .hashTag:
+				color = Palette.hashtagColor
+				mentions = tweet.hashtags
+			case .url:
+				color = Palette.urlColor
+				mentions = tweet.urls
+			case .user:
+				color = Palette.userColor
+				mentions = tweet.userMentions
+			}
+			for mention in mentions {
+				attributedText.addAttribute(NSForegroundColorAttributeName, value: color, range: mention.nsrange)
+			}
+		}
+		return attributedText
+	}
 }
+
+private struct Palette {
+	static let hashtagColor = UIColor.purple
+	static let urlColor = UIColor.blue
+	static let userColor = UIColor.orange
+}
+
+private enum MentionType {
+	case hashTag, url, user
+}
+
+    
+
