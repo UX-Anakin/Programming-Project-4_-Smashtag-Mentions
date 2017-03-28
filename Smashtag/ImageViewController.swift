@@ -30,6 +30,7 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
 		scrollView.contentSize = imageView.bounds.size
 		scrollView.addSubview(imageView)
+		setPopToRootButton()
     }
 	
 	override func viewDidLayoutSubviews() {
@@ -65,12 +66,6 @@ class ImageViewController: UIViewController, UIScrollViewDelegate {
 	{	autoZoom = true
 		zoomScaleToAspectFit()
 	}
-	
-	
-	@IBAction func popToRootViewController(_ sender: Any) {
-		_ = navigationController?.popToRootViewController(animated: true)
-	}
-
 
 	
 }

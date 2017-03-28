@@ -77,6 +77,7 @@ class TweetTableViewController: UITableViewController, UISearchBarDelegate {
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
         searchText = recentSearchKeys.last
+		setPopToRootButton()
     }
 	
 	// MARK: Replaced searchTextField with UISearchBar

@@ -66,6 +66,7 @@ class ImagesCollectionViewController: UICollectionViewController, UICollectionVi
 	
 	override func viewDidLoad() {
 		collectionView?.collectionViewLayout = collectionViewFlowLayout
+		setPopToRootButton()
 	}
 	
 	// MARK: Datasource methods

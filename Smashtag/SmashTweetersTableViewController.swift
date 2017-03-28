@@ -34,6 +34,11 @@ class SmashTweetersTableViewController: FetchedResultsTableViewController
 			tableView.reloadData()
         }
 	}
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		setPopToRootButton()
+	}
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {

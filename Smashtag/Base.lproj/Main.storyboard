@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16E192b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="oCr-LY-NvU">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="oCr-LY-NvU">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -14,7 +14,7 @@
         <scene sceneID="o0S-Jl-0cI">
             <objects>
                 <collectionViewController id="AQX-lc-9W9" customClass="ImagesCollectionViewController" customModule="Smashtag" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="XSp-eX-OKa">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="XSp-eX-OKa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -375,13 +375,7 @@
                             <constraint firstItem="h55-KD-uVh" firstAttribute="leading" secondItem="s5V-73-6dr" secondAttribute="leading" id="leb-aU-59k"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Image View" id="Geu-11-OeU">
-                        <barButtonItem key="rightBarButtonItem" systemItem="stop" id="tqX-yp-scU">
-                            <connections>
-                                <action selector="popToRootViewController:" destination="GgN-sd-Ivn" id="WJV-iZ-368"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Image View" id="Geu-11-OeU"/>
                     <connections>
                         <outlet property="scrollView" destination="h55-KD-uVh" id="uLr-IH-gjZ"/>
                     </connections>

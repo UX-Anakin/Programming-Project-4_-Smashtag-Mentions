@@ -8,16 +8,15 @@
 
 import UIKit
 
-private struct Constants {
-	static let MaxSearchKeys = 100
-	static let KeyForRecentSearches = "RecentSearchKeys"
-	static let cellReuseIdentifier = "Recents"
-	static let SegueToMainTweetTableView = "ToMainTweetTableView"
-	static let SegueToPopularMentions = "toPopularMentions"
-}
-
-
 class RecentsTableViewController: UITableViewController {
+	
+	private struct Constants {
+		static let MaxSearchKeys = 100
+		static let KeyForRecentSearches = "RecentSearchKeys"
+		static let cellReuseIdentifier = "Recents"
+		static let SegueToMainTweetTableView = "ToMainTweetTableView"
+		static let SegueToPopularMentions = "toPopularMentions"
+	}
 	
 	var recentSearchKeys = RecentSearchKeys(keyForData: Constants.KeyForRecentSearches, maxNoOfSearchKeys: Constants.MaxSearchKeys)
 	
@@ -25,6 +24,7 @@ class RecentsTableViewController: UITableViewController {
 	{
         super.viewDidLoad()
 		self.navigationItem.rightBarButtonItem = self.editButtonItem
+		setPopToRootButton()
     }
 	
 	override func viewWillAppear(_ animated: Bool)

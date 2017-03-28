@@ -9,13 +9,6 @@
 import UIKit
 import Twitter
 
-private struct Constants {
-	static let KeyForRecentSearches = "RecentSearchKeys"
-	static let cellReuseIdentifierForImages = "TweetMediaCell"
-	static let cellReuseIdentifierStandard = "TweetMentionsTableViewCell"
-	static let SegueToMainTweetTableView = "ToMainTweetTableView"
-	static let SegueToImageView = "ToImageView"
-}
 
 protocol BridgeMentionAndUser {
 	var keywordOrScreenName: String { get }
@@ -34,7 +27,15 @@ extension User: BridgeMentionAndUser {
 }
 
 class TweetMentionsTableViewController: UITableViewController {
-
+	
+	private struct Constants {
+		static let KeyForRecentSearches = "RecentSearchKeys"
+		static let cellReuseIdentifierForImages = "TweetMediaCell"
+		static let cellReuseIdentifierStandard = "TweetMentionsTableViewCell"
+		static let SegueToMainTweetTableView = "ToMainTweetTableView"
+		static let SegueToImageView = "ToImageView"
+	}
+	
 	var tweet: Twitter.Tweet? {
 		didSet {
 			tweetMentions = []
@@ -81,6 +82,11 @@ class TweetMentionsTableViewController: UITableViewController {
 			case .userMentions: return "User + UserMentions"
 			}
 		}
+	}
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		setPopToRootButton()
 	}
 	
 	private var tweetMentions: [TweetMention] = []
@@ -147,6 +153,8 @@ class TweetMentionsTableViewController: UITableViewController {
 			return UITableViewAutomaticDimension
 		}
 	}
+	
+	
 	
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)

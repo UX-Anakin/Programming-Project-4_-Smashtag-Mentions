@@ -8,19 +8,20 @@
 
 import Foundation
 
-private struct Constants {
-	static let MaxSearchKeys = 100
-}
+
 
 class RecentSearchKeys {
 	subscript(index: Int) -> String {
 		get { return searchKeys[index] }
 	}
 	
-	static var defaultSearchKey: String = "#stanford"
+	private struct Constants {
+		static let MaxSearchKeys = 100
+		static var defaultSearchKey: String = "#stanford"
+	}
 	
 	var last: String {
-		if isEmpty { addSearchKey(RecentSearchKeys.defaultSearchKey) }
+		if isEmpty { addSearchKey(Constants.defaultSearchKey) }
 		return self[0]
 	}
 	
